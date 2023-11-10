@@ -45,6 +45,17 @@ describe a number of best practices for securing container-based workloads.
 
 In the below subsections, you will find various deployment topics as they relate
 to the TensorFlow container image.
+
+## Networking
+
+`docker run --network=host` generally should be avoided in production. The
+container networking will not be isolated from your host, and generally you can
+expose ports to the host with `docker run -p 8080:8080`. If one container needs
+to access the services from another container, use `docker network create` to
+create a named network that the two containers can share and use to communicate.
+See the [docker networking documentation](https://docs.docker.com/network/) for
+details.
+
 ## SELinux or AppArmor
 
 [Security-Enhanced Linux (SELinux)](https://www.redhat.com/en/topics/linux/what-is-selinux)
