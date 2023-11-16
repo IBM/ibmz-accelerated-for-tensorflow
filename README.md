@@ -12,8 +12,9 @@
 - [Security and Deployment Guidelines](#security-and-deployment-guidelines)
 - [Execution on the Integrated Accelerator for AI and on CPU](#execution-paths)
 - [Model Validation](#model-validation)
-<!-- - [Using the Code Samples](#code-samples) -->
+- [Using the Code Samples](#code-samples)
 - [Frequently Asked Questions](#faq)
+- [Technical Support](#contact)
 - [Versioning Policy and Release Cadence](#versioning)
 - [Licenses](#licenses)
 
@@ -30,11 +31,11 @@ Accelerator for AI through the
 [IBM z Deep Neural Network](https://github.com/IBM/zDNN) (zDNN) library. The IBM
 zDNN library contains a set of primitives that support Deep Neural Networks.
 These primitives transparently target the IBM Integrated Accelerator for AI on
-IBM z16™ and later. No changes to the original model are needed to take
-advantage of the new inference acceleration capabilities.
+IBM z16 and later. No changes to the original model are needed to take advantage
+of the new inference acceleration capabilities.
 
-_Note. When using IBM Z Accelerated for TensorFlow on either an IBM z14™ or an
-IBM z15™, TensorFlow will transparently target the CPU with no changes to the
+_Note. When using IBM Z Accelerated for TensorFlow on either an IBM z15® or an
+IBM z14®, TensorFlow will transparently target the CPU with no changes to the
 model._
 
 # Downloading the IBM Z Accelerated for TensorFlow Container Image <a id="container"></a>
@@ -97,8 +98,8 @@ For documentation on how to train and run inferences on models with TensorFlow
 please visit the official
 [Open Source TensorFlow documentation](https://www.tensorflow.org/?hl=en).
 
-<!-- For brief examples on how to train and run inferences on models with TensorFlow
-please visit our [samples section](#code-samples). -->
+For brief examples on how to train and run inferences on models with TensorFlow
+please visit our [samples section](#code-samples).
 
 # A Look into the Acceleration <a id="acceleration"></a>
 
@@ -219,8 +220,9 @@ features or logs.
 
 # Security and Deployment Guidelines <a id="security-and-deployment-guidelines"></a>
 
-- Documentation for security and deployment best practices can be found
-  [here](deployment-guidelines.md).
+- For security and deployment best practices, please visit the common AI Toolkit
+  documentation found
+  [here](https://github.com/IBM/ai-toolkit-for-z-and-linuxone).
 
 # Execution on the Integrated Accelerator for AI and on CPU <a id="execution-paths"></a>
 
@@ -230,12 +232,12 @@ IBM Z Accelerated for TensorFlow container image follows IBM's train anywhere
 and deploy on IBM Z strategy.
 
 By default, when using the IBM Z Accelerated for TensorFlow container image on
-an IBM z16™ and later system, TensorFlow core will transparently target the
+an IBM z16 and later system, TensorFlow core will transparently target the
 Integrated Accelerator for AI for a number of compute-intensive operations
 during inferencing with no changes to the model.
 
-When using IBM Z Accelerated for TensorFlow on either an IBM z14™ or an IBM
-z15™, TensorFlow will transparently target the CPU with no changes to the model
+When using IBM Z Accelerated for TensorFlow on either an IBM z15 or an IBM z14,
+TensorFlow will transparently target the CPU with no changes to the model
 
 To modify the default execution path, you may change the environment variable,
 `NNPA_DEVICES`, before the application calls any TensorFlow API:
@@ -275,9 +277,10 @@ through `tf.function`.
 If problems are encountered when training a model, please
 `export NNPA_DEVICES=0` then try training your model.
 
-Some of TensorFlow applications will train models. Generally, training should
-work with the IBM Z Accelerated for TensorFlow container. However, our testing
-efforts have focused more on inferencing. Problems may arise during training.
+Some of the samples provided in this documentation, or your own TensorFlow
+applications, will train models. Generally, training should work with the IBM Z
+Accelerated for TensorFlow container. However, our testing efforts have focused
+more on inferencing. Problems may arise during training.
 
 If you have any issues training models, you can disable the IBM Integrated
 Accelerator for AI optimizations for training by setting the following
@@ -289,7 +292,7 @@ environment variable:
 export NNPA_DEVICES=0
 
 # Run the training script or workload.
-# Some applications might not have such a script and instead download
+# Some samples might not have such a script and instead download
 # a model from the Internet.
 python <train.py -args>
 
@@ -317,9 +320,9 @@ optimization illustrated in this document can be found
 _Note. Models that were trained outside of the TensorFlow ecosystem may throw
 endianness issues._
 
-<!-- # Using the Code Samples <a id="code-samples"></a>
+# Using the Code Samples <a id="code-samples"></a>
 
-Documentation for our code samples can be found [here](samples). -->
+Documentation for our code samples can be found [here](samples).
 
 # Frequently Asked Questions <a id="faq"></a>
 
@@ -338,12 +341,13 @@ Container Registry, namely
 and
 [ibmz/ibmz-accelerated-for-tensorflow](https://ibm.github.io/ibm-z-oss-hub/containers/ibmz-accelerated-for-tensorflow.html).
 
-The **"ibmz/tensorflow"** container image does not have support for the IBM
-Integrated Accelerator for AI. The `ibmz/tensorflow` only transparently targets
-the CPU. It does not have any optimizations referenced in this document.
+The `ibmz/tensorflow` container image does not have support for the IBM
+Integrated Accelerator for AI. The `ibmz/tensorflow` container image only
+transparently targets the CPU. It does not have any optimizations referenced in
+this document.
 
-The **"ibmz/ibmz-accelerated-for-tensorflow"** container image includes support
-for TensorFlow core Graph Execution to transparently target the IBM Integrated
+The `ibmz/ibmz-accelerated-for-tensorflow` container image includes support for
+TensorFlow core Graph Execution to transparently target the IBM Integrated
 Accelerator for AI. The `ibmz/ibmz-accelerated-for-tensorflow` container image
 also still allows it's users to transparently target the CPU. This container
 image contains the optimizations referenced in this document.
@@ -354,9 +358,9 @@ You may run the IBM Z Accelerated for TensorFlow container image on IBM Linux on
 Z or IBM® z/OS® Container Extensions (IBM zCX).
 
 _Note. The IBM Z Accelerated for TensorFlow container image will transparently
-target the IBM Integrated Accelerator for AI on IBM® z16™ and later. However, if
-using the IBM Z Accelerated for TensorFlow container image on either an IBM z14™
-or an IBM z15™, TensorFlow will transparently target the CPU with no changes to
+target the IBM Integrated Accelerator for AI on IBM z16 and later. However, if
+using the IBM Z Accelerated for TensorFlow container image on either an IBM z15
+or an IBM z14, TensorFlow will transparently target the CPU with no changes to
 the model._
 
 ## Q: Can I install a newer or older version of TensorFlow in the container?
@@ -365,7 +369,12 @@ No. Installing newer or older version of TensorFlow than what is configured in
 the container will not target the IBM Integrated Accelerator for AI.
 Additionally, installing a newer or older version of TensorFlow, or modifying
 the existing TensorFlow that is installed in the container image may have
-unintended, unsupported, consequences.
+unintended, unsupported, consequences. This is not advised.
+
+# Technical Support <a id="contact"></a>
+
+Information regarding technical support can be found
+[here](https://github.com/IBM/ai-toolkit-for-z-and-linuxone).
 
 # Versioning Policy and Release Cadence <a id="versioning"></a>
 
@@ -426,3 +435,13 @@ worldwide basis.
 
 TensorFlow, the TensorFlow logo and any related marks are trademarks of Google
 Inc.
+
+Docker and the Docker logo are trademarks or registered trademarks of Docker,
+Inc. in the United States and/or other countries. Docker, Inc. and other parties
+may also have trademark rights in other terms used herein.
+
+IBM, the IBM logo, and ibm.com, IBM z16, IBM z15, IBM z14 are trademarks or
+registered trademarks of International Business Machines Corp., registered in
+many jurisdictions worldwide. Other product and service names might be
+trademarks of IBM or other companies. The current list of IBM trademarks can be
+found [here](https://www.ibm.com/legal/copyright-trademark).
