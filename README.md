@@ -391,7 +391,7 @@ unset ZDNN_ENABLE_PRECHECK
 ```
 
 To see which operations in the Graph have been remapped to custom operations,
-you can set the environment variable `TF_CPP_VODULE='remapper=1'`, which will
+you can set the environment variable `TF_CPP_VMODULE='remapper=1'`, which will
 display logging information before each remapping of an operation.
 
 TensorFlow also requires `TF_CPP_MIN_LOG_LEVEL` to be set for any logs to be
@@ -404,14 +404,14 @@ export TF_CPP_MIN_LOG_LEVEL=0
 
 # This will manually instruct TensorFlow to display logging information for all
 # files named `remapper.*` at log level 1.
-export TF_CPP_VODULE='remapper=1'
+export TF_CPP_VMODULE='remapper=1'
 
 # Run the script.
 python <script.py -args>
 
 # When script is complete, unset the variable to disable TensorFlow logs.
 unset TF_CPP_MIN_LOG_LEVEL
-unset TF_CPP_VODULE
+unset TF_CPP_VMODULE
 ```
 
 Finally, you can use TensorBoard for profiling. Custom operations has been built
