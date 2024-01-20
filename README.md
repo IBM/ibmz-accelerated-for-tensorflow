@@ -414,7 +414,7 @@ unset TF_CPP_MIN_LOG_LEVEL
 unset TF_CPP_VMODULE
 ```
 
-Finally, you can use TensorBoard for profiling. Custom operations has been built
+Finally, you can use TensorBoard for profiling. Custom operations have been built
 to include additional profiling events. More information about TensorBoard can be
 found [here](https://www.tensorflow.org/tensorboard/get_started).
 
