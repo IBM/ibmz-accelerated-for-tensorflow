@@ -371,7 +371,7 @@ unintended, unsupported, consequences. This is not advised.
 
 ## Q: How can I verify the IBM Integrated Accelerator for AI is being utilized?
 
-As discuessed in [Environment Variables for Logging](#env-variables), there are
+As discussed in [Environment Variables for Logging](#env-variables), there are
 multiple methods to display logging information.
 
 To simply verify that the IBM Integrated Accelerator for AI is being utilized,
