@@ -177,7 +177,7 @@ made to ensure the NNPA instruction set for the accelerator is installed.
   should proceed the same way TensorFlow would without the acceleration
   benefits.
 
-## Environment Variables for Logging
+## Environment Variables for Logging <a id="env-variables"></a>
 
 Certain environment variables can be set before execution to enable/disable
 features or logs.
@@ -274,17 +274,15 @@ through `tf.function`.
 
 ## Training Workloads
 
-If problems are encountered when training a model, please
-`export NNPA_DEVICES=0` then try training your model.
-
 Some of the samples provided in this documentation, or your own TensorFlow
 applications, will train models. Generally, training should work with the IBM Z
 Accelerated for TensorFlow container. However, our testing efforts have focused
-more on inferencing. Problems may arise during training.
+more on inferencing. Problems may arise during training, so we highly advise that
+you disable the IBM Integrated Accelerator for AI.
 
 If you have any issues training models, you can disable the IBM Integrated
-Accelerator for AI optimizations for training by setting the following
-environment variable:
+Accelerator for AI optimizations by setting the environment variable
+`NNPA_DEVICES=0`:
 
 ```bash
 # This will manually instruct TensorFlow to target the CPU for all operations.
@@ -370,6 +368,55 @@ the container will not target the IBM Integrated Accelerator for AI.
 Additionally, installing a newer or older version of TensorFlow, or modifying
 the existing TensorFlow that is installed in the container image may have
 unintended, unsupported, consequences. This is not advised.
+
+## Q: How can I verify the IBM Integrated Accelerator for AI is being utilized?
+
+As discussed in [Environment Variables for Logging](#env-variables), there are
+multiple methods to display logging information.
+
+To simply verify that the IBM Integrated Accelerator for AI is being utilized,
+you can set the environment variable `ZDNN_ENABLE_PRECHECK=true`, which will
+display logging information before each call to the accelerator:
+
+```bash
+# This will manually instruct zDNN to display logging information before
+# each call to the accelerator.
+export ZDNN_ENABLE_PRECHECK=true
+
+# Run the script.
+python <script.py -args>
+
+# When script is complete, unset the variable to disable zDNN logs.
+unset ZDNN_ENABLE_PRECHECK
+```
+
+To see which operations in the Graph have been remapped to custom operations,
+you can set the environment variable `TF_CPP_VMODULE='remapper=1'`, which will
+display logging information before each remapping of an operation.
+
+TensorFlow also requires `TF_CPP_MIN_LOG_LEVEL` to be set for any logs to be
+generated:
+
+```bash
+# This will manually instruct TensorFlow to display logging information that
+# occurs at a level >= 0.
+export TF_CPP_MIN_LOG_LEVEL=0
+
+# This will manually instruct TensorFlow to display logging information for all
+# files named `remapper.*` at log level 1.
+export TF_CPP_VMODULE='remapper=1'
+
+# Run the script.
+python <script.py -args>
+
+# When script is complete, unset the variable to disable TensorFlow logs.
+unset TF_CPP_MIN_LOG_LEVEL
+unset TF_CPP_VMODULE
+```
+
+Finally, you can use TensorBoard for profiling. Custom operations have been built
+to include additional profiling events. More information about TensorBoard can be
+found [here](https://www.tensorflow.org/tensorboard/get_started).
 
 # Technical Support <a id="contact"></a>
 
