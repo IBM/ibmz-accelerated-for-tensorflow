@@ -62,4 +62,4 @@ score = model.evaluate(X_test, y_test, verbose=0)
 
 # Print test accuracy
 print('\n', 'Test accuracy:', score[1])
-model.save('./saved_model/1')
+model.save('model.keras')
