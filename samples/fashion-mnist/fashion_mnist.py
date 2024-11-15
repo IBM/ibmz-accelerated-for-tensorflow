@@ -23,7 +23,7 @@ import tensorflow as tf
 
 X_test = X_test.astype('float32') / 255
 
-model = tf.keras.models.load_model('./saved_model/1')
+model = tf.keras.models.load_model('model.keras')
 print(model.summary())
 
 y_pred = model.predict(X_test, batch_size=64)
