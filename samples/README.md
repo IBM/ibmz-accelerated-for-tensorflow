@@ -130,9 +130,11 @@ constructed, or it might be a TensorFlow issue.
 See the README.md file included with the sample for additional setup
 instructions and for the commands to run them.
 
-Currently there is one sample available:
+Currently there are two samples available:
 
 [Fashion MNIST](fashion-mnist)
+
+[Credit Card Fraud](credit-card-fraud)
 
 # Saving Models or Code changes
 
