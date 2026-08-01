@@ -25,7 +25,7 @@ handles this by building a new container image on your behalf:
 3. Once the image is built, `prerequisites.sh` creates a `workspace/`
    directory alongside the sample scripts, then starts an interactive shell
    inside the container with:
-   - The sample scripts mounted read-only at `/sample`
+   - The sample scripts mounted read-only at `/scripts`
    - The `workspace/` directory mounted at `/workspace` (writable)
 
 Run the script on the **host** (not from inside a container), passing your
@@ -67,27 +67,27 @@ First, train and save the model to disk with the `credit_card_fraud_training.py`
 script. Training will take some time.
 
 ```bash
-python /sample/credit_card_fraud_training.py
+python /scripts/credit_card_fraud_training.py
 ```
 
 This saves the trained model as `lstm.keras` and the fitted mapper as
 `fitted_mapper_v2_lstm.pkl` in `/workspace`. To train a GRU model instead:
 
 ```bash
-python /sample/credit_card_fraud_training.py --rnn-type gru
+python /scripts/credit_card_fraud_training.py --rnn-type gru
 ```
 
 Once the model has been trained, run the `credit_card_fraud.py` script to run
 inference against the model.
 
 ```bash
-python /sample/credit_card_fraud.py
+python /scripts/credit_card_fraud.py
 ```
 
 The script will report the test accuracy. To run inference with the GRU model:
 
 ```bash
-python /sample/credit_card_fraud.py --rnn-type gru
+python /scripts/credit_card_fraud.py --rnn-type gru
 ```
 
 ## Known Issues

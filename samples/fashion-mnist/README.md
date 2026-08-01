@@ -26,7 +26,7 @@ Create a workspace directory and start an interactive container shell:
 mkdir -p workspace
 
 docker run -it --rm \
-    -v "$(pwd)":/sample:ro,z \
+    -v "$(pwd)":/scripts:ro,z \
     -v "$(pwd)/workspace":/workspace:z \
     -w /workspace \
     icr.io/ibmz/ibmz-accelerated-for-tensorflow:X.X.X bash
@@ -36,7 +36,7 @@ From inside the container, train and save the model with the
 `fashion_mnist_training.py` script. Training will take some time.
 
 ```bash
-python /sample/fashion_mnist_training.py
+python /scripts/fashion_mnist_training.py
 ```
 
 This saves the trained model as `model.keras` in `/workspace`. Once training
@@ -44,7 +44,7 @@ is complete, run the `fashion_mnist.py` script to run inference against the
 model.
 
 ```bash
-python /sample/fashion_mnist.py
+python /scripts/fashion_mnist.py
 ```
 
 The script will report the test accuracy.
