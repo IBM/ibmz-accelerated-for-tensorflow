@@ -23,7 +23,6 @@ current version of the container image.
 Create a workspace directory and start an interactive container shell:
 
 ```bash
-cd samples/fashion-mnist
 mkdir -p workspace
 
 docker run -it --rm \
