@@ -92,8 +92,9 @@ def gen_inference_batch(
     while count < rows:
         end = min(count + batch_size, rows)
         batch_rows = end - count
-        batch_df = mapper.transform(df.loc[index_array[count:end].flatten()])
-        batch_df.reset_index(inplace=True, drop=True)
+        batch_df = df.loc[index_array[count:end].flatten()]
+        batch_df = batch_df.reset_index(drop=True)
+        batch_df = mapper.transform(batch_df)
         batch_data = batch_df.drop(
             ['Is Fraud?'], axis=1).to_numpy().reshape(batch_rows, SEQ_LENGTH, -1)
         batch_targets = batch_df['Is Fraud?'].to_numpy().reshape(
