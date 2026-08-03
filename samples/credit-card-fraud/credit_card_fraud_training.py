@@ -281,7 +281,7 @@ def build_mapper(rnn_type: str) -> ColumnTransformer:
 
 
 def prepare_training_data(
-        rnn_type: str, batch_size: int, seq_length: int) \
+        rnn_type: str, batch_size: int) \
         -> tuple[Generator[tuple[np.ndarray, np.ndarray], Any, Any], int]:
     """
     Load and preprocess training data. Returns the training generator and
@@ -314,8 +314,7 @@ def prepare_training_data(
 
 
 def prepare_model(
-        rnn_type: str, input_size: int,
-        seq_length: int) -> tf.keras.models.Model:
+        rnn_type: str, input_size: int) -> tf.keras.models.Model:
     """
     Build and compile the model.
     """
@@ -326,7 +325,7 @@ def prepare_model(
         rnn_layer = tf.keras.layers.GRU
 
     model = tf.keras.models.Sequential([
-        tf.keras.layers.Input(shape=(seq_length, input_size)),
+        tf.keras.layers.Input(shape=(SEQ_LENGTH, input_size)),
         rnn_layer(200, return_sequences=True),
         rnn_layer(200, return_sequences=False),
         tf.keras.layers.Dense(1, activation='sigmoid')
@@ -347,15 +346,14 @@ def prepare_model(
     return model
 
 
-def main(rnn_type: str = 'lstm', batch_size: int = 2048, seq_length: int = 7):
+def main(rnn_type: str = 'lstm', batch_size: int = 2048):
     """
     main
     """
 
-    train_generator, input_size = prepare_training_data(
-        rnn_type, batch_size, seq_length)
+    train_generator, input_size = prepare_training_data(rnn_type, batch_size)
 
-    model = prepare_model(rnn_type, input_size, seq_length)
+    model = prepare_model(rnn_type, input_size)
 
     print(model.summary())
 
@@ -383,12 +381,6 @@ if __name__ == '__main__':
         default=2048,
         help='Batch size for training (default: 2048)',
     )
-    parser.add_argument(
-        '--seq-length',
-        type=int,
-        default=7,
-        help='Sequence length (default: 7)',
-    )
     args = parser.parse_args()
 
-    main(args.rnn_type, args.batch_size, args.seq_length)
+    main(args.rnn_type, args.batch_size)
