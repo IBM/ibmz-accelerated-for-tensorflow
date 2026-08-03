@@ -96,11 +96,19 @@ python credit_card_fraud.py --rnn-type gru
 
 ## Cleanup
 
-When you are finished with the sample, remove the image and workspace volume:
+When you are finished with the sample, remove the container, image, and workspace
+volume:
 
 ```bash
+docker container prune -f
 docker rmi tensorflow-ccf-sample:<timestamp>
 docker volume rm tensorflow-ccf-workspace
+```
+
+If you are using rootless Podman, verify no processes are left behind:
+
+```bash
+top -u $(whoami)
 ```
 
 ## Known Issues
