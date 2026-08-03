@@ -7,6 +7,7 @@
 - [Overview](#overview)
 - [Downloading the IBM Z Accelerated for TensorFlow Container Image](#container)
 - [Container Image Contents](#contents)
+  - [Container Virtual Environment](#container-virtual-environment)
 - [TensorFlow Usage](#tensorflow)
 - [A Look into the Acceleration](#acceleration)
 - [Security and Deployment Guidelines](#security-and-deployment-guidelines)
@@ -91,6 +92,106 @@ content installed in the container, as well as any release notes for each
 released container image version, please visit the `releases` section of this
 GitHub Repository, or you can click
 [here](https://github.com/IBM/ibmz-accelerated-for-tensorflow/releases).
+
+## Container Virtual Environment
+
+The container image includes a Python virtual environment located at
+`/opt/venv` in the container. **TensorFlow and its dependencies are installed
+inside this virtual environment and will not function correctly unless it is
+active.** Any Python environment you use must have the same packages and
+compatible versions (including patch releases) as those in the default virtual
+environment.
+
+- The virtual environment contains the Python packages that are installed and
+  supported in the container image.
+- When you open an interactive shell in the container, the virtual environment
+  is activated automatically through `.bashrc`.
+- When the virtual environment is active, the shell prompt typically shows
+  `(venv)`
+
+For general guidance on working with Python virtual environments, see the
+[Python documentation on virtual environments](https://docs.python.org/3/library/venv.html).
+
+### Detecting whether the virtual environment is active
+
+If you are unsure whether the virtual environment is currently active, you can
+check either of the following:
+
+- Inspect the `VIRTUAL_ENV` environment variable. When a virtual environment is
+  active, this variable is set to its path:
+
+  ```bash
+  echo $VIRTUAL_ENV
+  # Prints /opt/venv when active, or nothing when inactive
+  ```
+
+- Check which `python3` executable is in use:
+
+  ```bash
+  which python3
+  # Should print /opt/venv/bin/python3 when the virtual environment is active
+  ```
+
+### Deactivating and reactivating the virtual environment
+
+If you need to leave the virtual environment within the current shell session,
+run:
+
+```bash
+deactivate
+```
+
+When the virtual environment is deactivated, the shell falls back to the
+system Python installation. TensorFlow and its dependencies will not be
+available in that state.
+
+To reactivate the virtual environment in the same or a new shell session, run:
+
+```bash
+source /opt/venv/bin/activate
+```
+
+### Running commands when `.bashrc` is not sourced
+
+The virtual environment is activated from `.bashrc`. Bash reads `.bashrc`
+automatically for interactive non-login shells, such as when you open a
+terminal inside the container. In several situations `.bashrc` is **not** read
+and the virtual environment will not be activated automatically:
+
+- Running a command through `docker run` (or `podman run`) without an
+  interactive session, for example:
+
+  ```bash
+  docker run <image> bash -c 'python your_script.py'
+  docker run <image> bash your_script.py
+  ```
+
+- Customizing or replacing the shell startup behavior in an image built on top
+  of this container image.
+- Adding another user whose `.bashrc` does not activate the virtual
+  environment, or removing the relevant activation lines from the existing
+  `.bashrc`.
+
+In these situations, use a login shell (`bash -l`). The container's login
+profile sources `.bashrc`, so this causes the virtual environment to be
+activated:
+
+```bash
+docker run <image> bash -l -c 'python your_script.py'
+```
+
+Alternatively, explicitly activate the virtual environment as part of your
+command:
+
+```bash
+docker run <image> bash -c 'source /opt/venv/bin/activate && python your_script.py'
+```
+
+> **Note:** If you are already inside the container with the virtual
+> environment active in your current session, running `bash -c '...'`
+> within that session will inherit the active environment. The issue only
+> arises when a shell is started fresh in a context where `.bashrc` is not
+> read.
 
 # TensorFlow Usage <a id="tensorflow"></a>
 
