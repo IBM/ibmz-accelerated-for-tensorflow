@@ -1,38 +1,54 @@
 # Fashion MNIST Sample
 
-The code sample in this directory
-[loads](https://www.tensorflow.org/versions/r2.12/api_docs/python/tf/keras/datasets/fashion_mnist/load_data)
-the
+The code sample in this directory trains a model on the
 [Fashion MNIST data set](https://www.tensorflow.org/datasets/catalog/fashion_mnist)
-and trains a model. A second script performs inference on the model with the
-test data set and displays the results.
+and runs inference on the trained model. It runs directly in the base
+container — no `prerequisites.sh` is needed.
 
 The [tensorflow README file](../../README.md) contains general information on
 downloading and running the samples.
 
-These samples will download the MNIST data set from the Internet.
+The Fashion MNIST data set is downloaded automatically when the training script
+runs.
+
+> If you are using rootless podman, see the
+> [Running with podman](../README.md#running-with-podman) section in the
+> top-level samples README before proceeding.
 
 ## Running the Sample
 
-Note that you will run these commands from inside the IBM Z Accelerated for
-TensorFlow container.
+Run these commands from the **host** machine. Replace `X.X.X` with the
+current version of the container image.
 
-First, train and save the model to disk with the `fashion_mnist_training.py`
-script. This will download the fashion MNIST data set and create a model in the
-current directory.
-
-Training will take some time. The epoch number in the output will indicate
-progress.
+Create a workspace directory and start an interactive container shell:
 
 ```bash
-python fashion_mnist_training.py
+mkdir -p workspace
+
+docker run -it --rm \
+    -v "$(pwd)":/scripts:ro,z \
+    -v "$(pwd)/workspace":/workspace:z \
+    -w /workspace \
+    icr.io/ibmz/ibmz-accelerated-for-tensorflow:X.X.X bash
 ```
 
-Once the model has been trained, run the `fashion_mnist.py` script to run
-inference against the model.
+From inside the container, train and save the model with the
+`fashion_mnist_training.py` script. Training will take some time.
 
 ```bash
-python fashion_mnist.py
+python /scripts/fashion_mnist_training.py
 ```
 
-The script will report a prediction for some sample images.
+This saves the trained model as `model.keras` in `/workspace`. Once training
+is complete, run the `fashion_mnist.py` script to run inference against the
+model.
+
+```bash
+python /scripts/fashion_mnist.py
+```
+
+The script will report the test accuracy.
+
+## Known Issues
+
+There are no known open issues with this sample.
