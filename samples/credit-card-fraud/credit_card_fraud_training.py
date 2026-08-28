@@ -346,7 +346,12 @@ def prepare_model(
     return model
 
 
-def main(rnn_type: str = 'lstm', batch_size: int = 2048):
+def main(
+    rnn_type: str = 'lstm',
+    batch_size: int = 2048,
+    epochs: int = 20,
+    steps_per_epoch: int = 50000,
+):
     """
     main
     """
@@ -357,8 +362,7 @@ def main(rnn_type: str = 'lstm', batch_size: int = 2048):
 
     print(model.summary())
 
-    # Train the model for 20 epochs, 50,000 batches per epoch.
-    model.fit(train_generator, epochs=20, steps_per_epoch=50000, verbose=1)
+    model.fit(train_generator, epochs=epochs, steps_per_epoch=steps_per_epoch, verbose=1)
 
     # Save model to file
     if not os.path.exists('./saved_model'):
@@ -381,6 +385,18 @@ if __name__ == '__main__':
         default=2048,
         help='Batch size for training (default: 2048)',
     )
+    parser.add_argument(
+        '--epochs',
+        type=int,
+        default=20,
+        help='Number of training epochs (default: 20)',
+    )
+    parser.add_argument(
+        '--steps-per-epoch',
+        type=int,
+        default=50000,
+        help='Number of steps per epoch (default: 50000)',
+    )
     args = parser.parse_args()
 
-    main(args.rnn_type, args.batch_size)
+    main(args.rnn_type, args.batch_size, args.epochs, args.steps_per_epoch)
