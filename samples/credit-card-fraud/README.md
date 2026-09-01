@@ -82,7 +82,7 @@ You can specify the number of epochs with `--epochs` (default: `20`) and
 the steps per epoch with `--steps-per-epoch` (default: `50000`):
 
 ```bash
-python /scripts/credit_card_fraud_training.py --epochs 5 --steps-per-epoch 10000
+python /scripts/credit_card_fraud_training.py --epochs 2 --steps-per-epoch 1000
 ```
 
 Once the model has been trained, run the `credit_card_fraud.py` script to run

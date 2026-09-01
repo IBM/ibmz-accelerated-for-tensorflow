@@ -41,7 +41,7 @@ You can specify the number of epochs with `--epochs` (default: `10`) and
 the batch size with `--batch-size` (default: `64`):
 
 ```bash
-python /scripts/fashion_mnist_training.py --epochs 5 --batch-size 32
+python /scripts/fashion_mnist_training.py --epochs 2 --batch-size 32
 ```
 
 This saves the trained model as `model.keras` in `/workspace`. Once training
