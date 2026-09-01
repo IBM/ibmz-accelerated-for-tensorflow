@@ -37,6 +37,13 @@ From inside the container, train and save the model with the
 python /scripts/fashion_mnist_training.py
 ```
 
+You can specify the number of epochs with `--epochs` (default: `10`) and
+the batch size with `--batch-size` (default: `64`):
+
+```bash
+python /scripts/fashion_mnist_training.py --epochs 5 --batch-size 32
+```
+
 This saves the trained model as `model.keras` in `/workspace`. Once training
 is complete, run the `fashion_mnist.py` script to run inference against the
 model.
