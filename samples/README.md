@@ -132,9 +132,10 @@ instructions and for the commands to run them.
 
 Currently there are two samples available:
 
-[Fashion MNIST](fashion-mnist)
-
-[Credit Card Fraud](credit-card-fraud)
+| Sample | Requires `prerequisites.sh`? | Why |
+|---|---|---|
+| [Fashion MNIST](fashion-mnist) | No | Only uses packages already included in the base TensorFlow container |
+| [Credit Card Fraud](credit-card-fraud) | Yes | Requires `scikit-learn`, `pandas`, and `joblib`, which must be compiled from source and installed as `root` — `prerequisites.sh` builds a custom image to handle this |
 
 # Saving Models or Code changes
 
@@ -166,9 +167,7 @@ usage outside the container, or with other containers.
 
 4. Use [volumes](https://docs.docker.com/storage/volumes/) with the
    `docker run --mount` parameter. Volumes isolate the data from the host and
-   can be easily shared between containers. Named volumes are managed entirely
-   by the container runtime and are not subject to user namespace ownership
-   issues under rootless podman.
+   can be easily shared between containers.
 
 Use the technique that works best for your application to persist and share your
 data.

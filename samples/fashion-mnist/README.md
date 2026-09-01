@@ -20,14 +20,12 @@ runs.
 Run these commands from the **host** machine. Replace `X.X.X` with the
 current version of the container image.
 
-Create a workspace directory and start an interactive container shell:
+Start an interactive container shell with a named volume for the workspace:
 
 ```bash
-mkdir -p workspace
-
 docker run -it --rm \
     -v "$(pwd)":/scripts:ro,z \
-    -v "$(pwd)/workspace":/workspace:z \
+    -v fashion-mnist-workspace:/workspace \
     -w /workspace \
     icr.io/ibmz/ibmz-accelerated-for-tensorflow:X.X.X bash
 ```
@@ -48,6 +46,22 @@ python /scripts/fashion_mnist.py
 ```
 
 The script will report the test accuracy.
+
+## Cleanup
+
+When you are finished with the sample, remove the stopped container and the
+workspace volume:
+
+```bash
+docker container prune -f
+docker volume rm fashion-mnist-workspace
+```
+
+If you are using rootless Podman, verify no processes are left behind:
+
+```bash
+top -u $(whoami)
+```
 
 ## Known Issues
 
