@@ -115,12 +115,6 @@ docker rmi tensorflow-ccf-sample:<timestamp>
 docker volume rm tensorflow-ccf-workspace
 ```
 
-If you are using rootless Podman, verify no processes are left behind:
-
-```bash
-top -u $(whoami)
-```
-
 ## Known Issues
 
 There are no known open issues with this sample.
