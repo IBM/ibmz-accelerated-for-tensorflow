@@ -20,14 +20,12 @@ runs.
 Run these commands from the **host** machine. Replace `X.X.X` with the
 current version of the container image.
 
-Create a workspace directory and start an interactive container shell:
+Start an interactive container shell with a named volume for the workspace:
 
 ```bash
-mkdir -p workspace
-
 docker run -it --rm \
     -v "$(pwd)":/scripts:ro,z \
-    -v "$(pwd)/workspace":/workspace:z \
+    -v fashion-mnist-workspace:/workspace \
     -w /workspace \
     icr.io/ibmz/ibmz-accelerated-for-tensorflow:X.X.X bash
 ```
@@ -39,6 +37,13 @@ From inside the container, train and save the model with the
 python /scripts/fashion_mnist_training.py
 ```
 
+You can specify the number of epochs with `--epochs` (default: `10`) and
+the batch size with `--batch-size` (default: `64`):
+
+```bash
+python /scripts/fashion_mnist_training.py --epochs 2 --batch-size 32
+```
+
 This saves the trained model as `model.keras` in `/workspace`. Once training
 is complete, run the `fashion_mnist.py` script to run inference against the
 model.
@@ -48,6 +53,16 @@ python /scripts/fashion_mnist.py
 ```
 
 The script will report the test accuracy.
+
+## Cleanup
+
+When you are finished with the sample, remove the stopped container and the
+workspace volume:
+
+```bash
+docker container prune -f
+docker volume rm fashion-mnist-workspace
+```
 
 ## Known Issues
 

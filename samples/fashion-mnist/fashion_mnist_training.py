@@ -16,50 +16,77 @@
 Sample Tensorflow application training with the Fashion MNIST data set.
 Run this model with `fashion_mnist.py`.
 """
+import argparse
+
 import tensorflow as tf
 
-(X_train, y_train), (X_test, y_test) = \
-    tf.keras.datasets.fashion_mnist.load_data()
-print(f'X_train shape:{X_train.shape}, y_train shape: {y_train.shape}')
 
-X_train = X_train.astype('float32') / 255
-X_test = X_test.astype('float32') / 255
+def main(epochs: int = 10, batch_size: int = 64):
+    """
+    main
+    """
 
-model = tf.keras.Sequential()
-model.add(tf.keras.layers.Conv2D(
-    64,
-    7,
-    padding='same',
-    activation='relu',
-    input_shape=[28, 28, 1]))
-model.add(tf.keras.layers.MaxPooling2D(2))
-model.add(tf.keras.layers.Conv2D(128, 3, padding='same', activation='relu'))
-model.add(tf.keras.layers.Conv2D(128, 3, padding='same', activation='relu'))
-model.add(tf.keras.layers.MaxPooling2D(2))
-model.add(tf.keras.layers.Conv2D(256, 3, padding='same', activation='relu'))
-model.add(tf.keras.layers.Conv2D(256, 3, padding='same', activation='relu'))
-model.add(tf.keras.layers.MaxPooling2D(2))
-model.add(tf.keras.layers.Flatten())
-model.add(tf.keras.layers.Dense(128, activation='relu'))
-model.add(tf.keras.layers.Dropout(0.5))
-model.add(tf.keras.layers.Dense(64, activation='relu'))
-model.add(tf.keras.layers.Dropout(0.5))
-model.add(tf.keras.layers.Dense(10, activation='softmax'))
-print(model.summary())
+    (X_train, y_train), (X_test, y_test) = \
+        tf.keras.datasets.fashion_mnist.load_data()
+    print(f'X_train shape:{X_train.shape}, y_train shape: {y_train.shape}')
 
-model.compile(loss='sparse_categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
+    X_train = X_train.astype('float32') / 255
+    X_test = X_test.astype('float32') / 255
 
-model.fit(X_train,
-          y_train,
-          batch_size=64,
-          epochs=10,
-          validation_data=(X_test, y_test))
+    model = tf.keras.Sequential()
+    model.add(tf.keras.layers.Conv2D(
+        64,
+        7,
+        padding='same',
+        activation='relu',
+        input_shape=[28, 28, 1]))
+    model.add(tf.keras.layers.MaxPooling2D(2))
+    model.add(tf.keras.layers.Conv2D(128, 3, padding='same', activation='relu'))
+    model.add(tf.keras.layers.Conv2D(128, 3, padding='same', activation='relu'))
+    model.add(tf.keras.layers.MaxPooling2D(2))
+    model.add(tf.keras.layers.Conv2D(256, 3, padding='same', activation='relu'))
+    model.add(tf.keras.layers.Conv2D(256, 3, padding='same', activation='relu'))
+    model.add(tf.keras.layers.MaxPooling2D(2))
+    model.add(tf.keras.layers.Flatten())
+    model.add(tf.keras.layers.Dense(128, activation='relu'))
+    model.add(tf.keras.layers.Dropout(0.5))
+    model.add(tf.keras.layers.Dense(64, activation='relu'))
+    model.add(tf.keras.layers.Dropout(0.5))
+    model.add(tf.keras.layers.Dense(10, activation='softmax'))
+    print(model.summary())
 
-# Evaluate the model on test set
-score = model.evaluate(X_test, y_test, verbose=0)
+    model.compile(loss='sparse_categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
 
-# Print test accuracy
-print('\n', 'Test accuracy:', score[1])
-model.save('model.keras')
+    model.fit(X_train,
+              y_train,
+              batch_size=batch_size,
+              epochs=epochs,
+              validation_data=(X_test, y_test))
+
+    # Evaluate the model on test set
+    score = model.evaluate(X_test, y_test, verbose=0)
+
+    # Print test accuracy
+    print('\n', 'Test accuracy:', score[1])
+    model.save('model.keras')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--epochs',
+        type=int,
+        default=10,
+        help='Number of training epochs (default: 10)',
+    )
+    parser.add_argument(
+        '--batch-size',
+        type=int,
+        default=64,
+        help='Batch size for training (default: 64)',
+    )
+    args = parser.parse_args()
+
+    main(args.epochs, args.batch_size)
